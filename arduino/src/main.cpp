@@ -19,16 +19,12 @@
 constexpr uint8_t RST_PIN = 26;     // Configurable, see typical pin layout above
 constexpr uint8_t SS_PIN = 24;     // Configurable, see typical pin layout above
  
-MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
-
-MFRC522::MIFARE_Key key; 
-
-// Init array that will store new NUID 
-byte nuidPICC[4];
+MFRC522 rfid(SS_PIN, RST_PIN);
 
 /**
  * Helper routine to dump a byte array as hex values to Serial. 
  */
+
 void printHex(byte *buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
     Serial.print(buffer[i] < 0x10 ? "0" : "");
@@ -44,7 +40,6 @@ void setup() {
 }
  
 void loop() {
-
   // Look for new cards
   if (!rfid.PICC_IsNewCardPresent())
     return;
@@ -54,10 +49,4 @@ void loop() {
     return;
 
   printHex(rfid.uid.uidByte, rfid.uid.size); 
-
-  // Halt PICC
-  rfid.PICC_HaltA();
-
-  // Stop encryption on PCD
-  rfid.PCD_StopCrypto1();
 }
